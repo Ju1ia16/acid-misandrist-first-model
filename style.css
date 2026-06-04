@@ -1,0 +1,326 @@
+body {
+    margin: 0;
+    background: url("leopard.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    font-family: Arial, sans-serif;
+    color: white;
+    cursor: url("molecule.png") 16 16, auto;
+}
+
+/* CENTERED PAGE */
+.page {
+    width: 900px;
+    margin: auto;
+    background: black;
+}
+
+/* HEADER */
+.header {
+    padding: 15px;
+    margin-bottom: 10px;
+}
+
+.logo {
+    font-size: 38px;
+    font-weight: bold;
+}
+
+.subtitle {
+    font-size: 14px;
+    color: #ccc;
+    margin-top: 5px;
+}
+
+/* NAV */
+.nav {
+    background: rgb(250, 45, 155);
+    color: black;
+    padding: 6px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+/* MAIN LAYOUT */
+.main {
+    display: flex;
+}
+
+.left {
+    width: 35%;
+    padding: 10px;
+}
+
+.right {
+    width: 65%;
+    padding: 10px;
+}
+
+/* PROFILE */
+.profile {
+    width: 100%;
+    border: 3px solid rgb(244, 120, 196);
+}
+
+.handle {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.bio {
+    margin-top: 10px;
+    font-size: 13px;
+}
+
+.online {
+    color: lime;
+    font-size: 12px;
+    margin: 5px 0;
+}
+
+.text-block {
+    font-size: 13px;
+    margin-top: 10px;
+}
+
+/* BOX SYSTEM */
+.box {
+    border: 3px solid rgb(141, 24, 71);
+    margin-top: 12px;
+    background: #111;
+}
+
+.box-header {
+    background: rgb(255, 145, 240);
+    color: black;
+    font-size: 13px;
+    padding: 4px;
+    font-weight: bold;
+}
+
+/* LOGIN */
+.login {
+    padding: 10px;
+    font-size: 12px;
+}
+
+.login input {
+    width: 95%;
+    margin: 4px 0;
+    padding: 4px;
+}
+
+/* MOOD */
+.mood-img {
+    width: 100%;
+}
+
+/* GRID */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 5px;
+    padding: 8px;
+}
+
+.grid img {
+    width: 100%;
+    border: 2px solid pink;
+}
+
+.grid p {
+    font-size: 10px;
+    margin: 0;
+    text-align: center;
+}
+
+/* MUSIC */
+.artists {
+    font-size: 11px;
+    padding: 8px;
+}
+
+/* IMAGE */
+.big-img {
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* LOCATION */
+.location {
+    padding: 10px;
+    font-size: 12px;
+}
+
+/*Navigation 2*/
+
+.nav a {
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+    margin: 0 5px;
+}
+
+.nav a:hover {
+    text-decoration: underline;
+}
+
+.comment-section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.comment-section input {
+    padding: 8px;
+    border: 1px solid hotpink;
+    background: #fff0f6;
+    font-family: Arial;
+}
+
+.comment-section button {
+    background: hotpink;
+    color: white;
+    border: none;
+    padding: 6px;
+    cursor: pointer;
+}
+
+.comment {
+    background: rgb(10, 0, 6);
+    border: 1px solid pink;
+    padding: 8px;
+    font-size: 13px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.comment-header {
+    font-size: 12px;
+    color: deeppink;
+    display: flex;
+    justify-content: space-between;
+}
+
+.like-btn {
+    cursor: pointer;
+    user-select: none;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+
+    padding: 4px 8px;
+    border-radius: 999px;
+
+    background: #ffe6f2;
+    border: 1px solid hotpink;
+
+    font-size: 12px;
+    color: hotpink;
+
+    transition: all 0.2s ease;
+}
+
+/* hover effect */
+.like-btn:hover {
+    background: hotpink;
+    color: white;
+    transform: scale(1.05);
+}
+
+/* when clicked animation (optional visual pop) */
+.like-btn:active {
+    transform: scale(0.95);
+}
+
+.glitter-heart {
+    position: fixed;
+    pointer-events: none;
+    font-size: 16px;
+    animation: floatUp 1s ease-out forwards;
+    z-index: 9999;
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-80px) scale(1.6);
+        opacity: 0;
+    }
+}
+
+.blinkie-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.blinkie-grid img {
+    width: 100%;      /* fills the box */
+    height: auto;     /* keeps aspect ratio */
+    display: block;   /* removes tiny gaps */
+
+    image-rendering: pixelated;
+    border: 1px solid hotpink;
+    background: white;
+    box-shadow: 0 0 6px hotpink;
+}
+
+.blinkie-grid img:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 8px hotpink;
+    transition: 0.2s;
+}
+
+.subtitle marquee {
+    color: #39ff14; /* neon green */
+    font-weight: bold;
+    font-size: 16px;
+
+    text-shadow:
+        0 0 5px #39ff14,
+        0 0 10px #39ff14,
+        0 0 20px #00ff00;
+
+    letter-spacing: 1px;
+}
+
+.sparkle {
+    position: fixed;
+    pointer-events: none;
+    font-size: 14px;
+    animation: sparkleFade 0.8s linear forwards;
+    z-index: 9999;
+}
+
+@keyframes sparkleFade {
+    0% {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0.5) translateY(-20px);
+        opacity: 0;
+    }
+}
+
+.bio {
+    color: hotpink;
+    text-align: center;
+    font-weight: bold;
+    line-height: 1.6;
+
+    text-shadow:
+        0 0 5px hotpink,
+        0 0 10px pink;
+
+    letter-spacing: 1px;
+}

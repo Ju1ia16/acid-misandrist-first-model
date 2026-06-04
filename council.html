@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Church Experience</title>
+  <style>
+    body {
+      margin: 0;
+      height: 4000px;
+      background: black;
+    }
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+    }
+  </style>
+</head>
+<body>
+
+<!-- LOCAL THREE.JS -->
+<script src="./three.js"></script>
+
+<script>
+// SCENE
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x050505);
+scene.fog = new THREE.Fog(0x050505, 20, 80);
+
+// CAMERA
+const camera = new THREE.PerspectiveCamera(
+  60,
+  window.innerWidth / window.innerHeight,
+  0.1,
+  1000
+);
+
+// RENDERER
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
+
+// LIGHTING (balanced cinematic)
+const ambient = new THREE.AmbientLight(0xffffff, 0.4);
+scene.add(ambient);
+
+const moonLight = new THREE.DirectionalLight(0x8899ff, 1);
+moonLight.position.set(5, 10, 5);
+scene.add(moonLight);
+
+const altarLight = new THREE.PointLight(0xff00ff, 3, 25);
+altarLight.position.set(0, 3, -25);
+scene.add(altarLight);
+
+// MATERIALS
+const stoneMaterial = new THREE.MeshStandardMaterial({
+  color: 0x2a2a2a,
+  roughness: 0.95,
+  metalness: 0.1
+});
+
+const glowMaterial = new THREE.MeshStandardMaterial({
+  color: 0x111111,
+  emissive: 0x5500aa,
+  emissiveIntensity: 0.6
+});
+
+// FLOOR
+const floor = new THREE.Mesh(
+  new THREE.PlaneGeometry(100, 100),
+  stoneMaterial
+);
+floor.rotation.x = -Math.PI / 2;
+scene.add(floor);
+
+// CHURCH BODY
+const church = new THREE.Mesh(
+  new THREE.BoxGeometry(8, 6, 30),
+  stoneMaterial
+);
+church.position.z = -15;
+scene.add(church);
+
+// ROOF
+const roof = new THREE.Mesh(
+  new THREE.ConeGeometry(6, 4, 4),
+  stoneMaterial
+);
+roof.position.set(0, 5, -15);
+roof.rotation.y = Math.PI / 4;
+scene.add(roof);
+
+// GLOWING WINDOWS
+for (let i = -4; i <= 4; i++) {
+  const win = new THREE.Mesh(
+    new THREE.PlaneGeometry(1, 2),
+    glowMaterial
+  );
+  win.position.set(4.1, 2, -15 + i * 3);
+  scene.add(win);
+}
+
+// ALTAR
+const altar = new THREE.Mesh(
+  new THREE.BoxGeometry(3, 2, 1),
+  glowMaterial
+);
+altar.position.set(0, 1, -25);
+scene.add(altar);
+
+// TAROT CARDS
+const cards = [];
+const radius = 4;
+
+for (let i = 0; i < 6; i++) {
+  const card = new THREE.Mesh(
+    new THREE.PlaneGeometry(1.5, 2),
+    new THREE.MeshStandardMaterial({
+      color: 0xffffff,
+      emissive: 0x5500ff,
+      emissiveIntensity: 0.6
+    })
+  );
+  scene.add(card);
+  cards.push(card);
+}
+
+// CLICK INTERACTION
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+
+window.addEventListener("click", (event) => {
+  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+  raycaster.setFromCamera(mouse, camera);
+  const intersects = raycaster.intersectObjects(cards);
+
+  if (intersects.length > 0) {
+    intersects[0].object.material.emissive.set(0xff0000);
+  }
+});
+
+// SMOOTH SCROLL CAMERA
+let targetZ = 20;
+let currentZ = 20;
+
+window.addEventListener("scroll", () => {
+  const maxScroll = document.body.scrollHeight - window.innerHeight;
+  const scrollProgress = window.scrollY / maxScroll;
+
+  // smooth journey from outside → inside → altar
+  targetZ = 20 - scrollProgress * 45;
+});
+
+// START POSITION
+camera.position.set(0, 4, 20);
+
+// ANIMATION
+function animate() {
+  requestAnimationFrame(animate);
+  currentZ = Math.max(-25, Math.min(20, currentZ));
+camera.position.z = currentZ;
+
+  // smooth camera movement
+  currentZ += (targetZ - currentZ) * 0.05;
+  camera.position.z = currentZ;
+
+  // always look toward altar
+  camera.lookAt(0, 2, -25);
+
+  // ORBIT CARDS
+  const time = Date.now() * 0.001;
+
+  cards.forEach((card, i) => {
+    const angle = time + (i / cards.length) * Math.PI * 2;
+
+    card.position.x = Math.cos(angle) * radius;
+    card.position.z = -25 + Math.sin(angle) * radius;
+    card.position.y = 2;
+
+    card.lookAt(camera.position);
+  });
+
+  renderer.render(scene, camera);
+}
+animate();
+
+// RESIZE FIX
+window.addEventListener("resize", () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+</script>
+
+</body>
+</html>
