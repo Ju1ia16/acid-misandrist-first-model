@@ -2,67 +2,212 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Casefile</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEON CASE OS</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="casefiles.css">
 </head>
-
 <body>
 
-<!-- NAV -->
-<div class="nav">
-    <a href="../index.html">Home</a>
-    <a href="#">Legacy</a>
-    <a href="#">Socials</a>
-    <a href="#">Calendar</a>
+<!-- BOOT -->
+<div id="bootScreen">
+  <div id="bootText"></div>
 </div>
 
-<!-- ABOUT BOX -->
-<div class="box">
-    <div class="box-header">CANCELLED FOR...</div>
-
-    <div class="about">
-        <img src="profile.jpg" class="profile">
-
-        <div class="info">
-            <h1 class="name">MJ</h1>
-
-            <p>"Serving cunt.<br>Eating these bitches up."</p>
-
-            <p><b>Morally grey statements:</b><br>
-            Beating men should be legalized&lt;3, Make industrialized prison camps a thing !!</p>
-
-            <p><b>Slightly rechte Aussagen:</b><br>
-            Ich werd euch nie mein Aktienportfolio zeigen</p>
-
-            <p><b>Mood:</b><br>
-            Power hungry.</p>
-        </div>
+<!-- SCREEN 1: FORM -->
+<div class="screen" id="formScreen">
+  <div class="os-topbar">
+    <span>NEON CASE OS &nbsp; 1-JAN-87 &nbsp; SECURE SYSTEM</span>
+    <span id="osClock">00:00</span>
+  </div>
+  <div class="os-body">
+    <div class="os-menubar">
+      <span>File</span><span>Edit</span><span>View</span><span>System</span><span>Help</span>
     </div>
+    <div class="os-content">
+      <!-- file list -->
+      <div class="os-list">
+        <div class="os-list-header">
+          <span>Field</span><span style="text-align:right">Status</span>
+        </div>
+        <div class="os-row" onclick="selectField('name')">
+          <span class="os-row-left">Identity Name</span>
+          <span class="os-row-right" id="status-name">Empty</span>
+        </div>
+        <div class="os-row" onclick="selectField('age')">
+          <span class="os-row-left">Age</span>
+          <span class="os-row-right" id="status-age">Empty</span>
+        </div>
+        <div class="os-row" onclick="selectField('nodetype')">
+          <span class="os-row-left">Node Type</span>
+          <span class="os-row-right" id="status-nodetype">Star Node</span>
+        </div>
+        <div class="os-row" onclick="selectField('mood')">
+          <span class="os-row-left">Current Mood</span>
+          <span class="os-row-right" id="status-mood">Empty</span>
+        </div>
+        <div class="os-row" onclick="selectField('beliefs')">
+          <span class="os-row-left">Morally Grey Input</span>
+          <span class="os-row-right" id="status-beliefs">Empty</span>
+        </div>
+        <div class="os-row" onclick="selectField('skill')">
+          <span class="os-row-left">Skill Level</span>
+          <span class="os-row-right" id="status-skill">5</span>
+        </div>
+        <div class="os-row" onclick="selectField('chaos')">
+          <span class="os-row-left">Chaos Rating</span>
+          <span class="os-row-right" id="status-chaos">5</span>
+        </div>
+        <div class="os-row" id="upload-row" onclick="doUpload()" style="margin-top:8px; border:1px solid var(--pink); background:var(--faint);">
+          <span class="os-row-left">▶ UPLOAD TO SYSTEM</span>
+          <span class="os-row-right">Run</span>
+        </div>
+      </div>
+
+      <!-- sidebar inputs -->
+      <div class="os-sidebar">
+        <div class="os-sidebar-title">FIELD INPUT</div>
+
+        <div id="input-name" class="field-input">
+          <div class="os-sidebar-row"><span class="os-sidebar-key">Device</span><span style="font-size:15px;color:var(--muted)">Case Node</span></div>
+          <div class="os-sidebar-row"><span class="os-sidebar-key">Subject</span><span style="font-size:15px;color:var(--muted)">Identity</span></div>
+          <div class="os-sidebar-row" style="margin-top:8px;"><span class="os-sidebar-key">Name</span><input class="os-sidebar-val" id="nameVal" placeholder="enter..." oninput="updateStatus('name',this.value)" /></div>
+        </div>
+
+        <div id="input-age" class="field-input" style="display:none">
+          <div class="os-sidebar-row"><span class="os-sidebar-key">Kind</span><span style="font-size:15px;color:var(--muted)">Integer</span></div>
+          <div class="os-sidebar-row" style="margin-top:8px;"><span class="os-sidebar-key">Age</span><input class="os-sidebar-val" id="ageVal" type="number" placeholder="enter..." oninput="updateStatus('age',this.value)" /></div>
+        </div>
+
+        <div id="input-nodetype" class="field-input" style="display:none">
+          <div class="os-sidebar-row"><span class="os-sidebar-key">Kind</span><span style="font-size:15px;color:var(--muted)">Enum</span></div>
+          <div class="os-sidebar-row" style="margin-top:8px;"><span class="os-sidebar-key">Type</span>
+            <select class="os-sidebar-val" id="nodetypeVal" onchange="updateStatus('nodetype',this.value)">
+              <option value="STAR NODE">Star Node</option>
+              <option value="ICON NODE">Icon Node</option>
+              <option value="DIVA NODE">Diva Node</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="input-mood" class="field-input" style="display:none">
+          <div class="os-sidebar-row"><span class="os-sidebar-key">Kind</span><span style="font-size:15px;color:var(--muted)">String</span></div>
+          <div class="os-sidebar-row" style="margin-top:8px;"><span class="os-sidebar-key">Mood</span><input class="os-sidebar-val" id="moodVal" placeholder="type mood..." oninput="updateStatus('mood',this.value)" /></div>
+        </div>
+
+        <div id="input-beliefs" class="field-input" style="display:none">
+          <div class="os-sidebar-row"><span class="os-sidebar-key">Kind</span><span style="font-size:15px;color:var(--muted)">String</span></div>
+          <div class="os-sidebar-row" style="margin-top:8px;"><span class="os-sidebar-key">Belief</span><input class="os-sidebar-val" id="beliefsVal" placeholder="enter..." oninput="updateStatus('beliefs',this.value)" /></div>
+        </div>
+
+        <div id="input-skill" class="field-input" style="display:none">
+          <div class="os-sidebar-row"><span class="os-sidebar-key">Kind</span><span style="font-size:15px;color:var(--muted)">1–10</span></div>
+          <div class="os-sidebar-row" style="margin-top:8px;"><span class="os-sidebar-key">Skill</span>
+            <select class="os-sidebar-val" id="skillVal" onchange="updateStatus('skill',this.value)">
+              <option>1</option><option>2</option><option>3</option><option>4</option>
+              <option value="5" selected>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="input-chaos" class="field-input" style="display:none">
+          <div class="os-sidebar-row"><span class="os-sidebar-key">Kind</span><span style="font-size:15px;color:var(--muted)">1–10</span></div>
+          <div class="os-sidebar-row" style="margin-top:8px;"><span class="os-sidebar-key">Chaos</span>
+            <select class="os-sidebar-val" id="chaosVal" onchange="updateStatus('chaos',this.value)">
+              <option>1</option><option>2</option><option>3</option><option>4</option>
+              <option value="5" selected>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="margin-top:14px; border-top:1px solid var(--dim); padding-top:10px;">
+          <div class="os-pixel-preview">
+            <canvas id="previewCanvas" width="80" height="80"></canvas>
+            <div class="os-pixel-label">// PREVIEW</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="os-status">
+      <span class="os-status-left">Select a field and confirm. Or press CODE-? for help</span>
+      <button class="upload-btn" onclick="doUpload()">▶ UPLOAD TO SYSTEM</button>
+    </div>
+  </div>
 </div>
 
-<!-- COMMENTS -->
-<div class="box">
-    <div class="box-header">Besties</div>
-
-    <div class="comments-header">Comments</div>
-
-    <div class="comment">
-        <img src="profile.jpg">
-        <div>
-            <b>She/Her</b><br>
-            Working...
-        </div>
+<!-- SCREEN 2: PROFILE CARD -->
+<div class="screen" id="profileScreen">
+  <div class="card">
+    <div class="card-topbar">
+      <span>NEON CASE OS &nbsp;///&nbsp; CASE FILE</span>
+      <button class="back-btn" onclick="goBack()">◀ BACK</button>
     </div>
-
-    <div class="comment">
-        <img src="profile.jpg">
-        <div>
-            <b>Wokey</b><br>
-            Fascho
+    <div class="card-body">
+      <!-- LEFT -->
+      <div class="card-left">
+        <div class="card-art">
+          <canvas id="profileArt" width="160" height="160"></canvas>
         </div>
+        <div class="card-art-label">
+          <span>// PIXEL_ID</span>
+          <span id="profileId">--</span>
+        </div>
+        <div class="card-badges">
+          <div class="badge">
+            <span class="badge-key">// SKILL_</span>
+            <span class="dot-meter" id="skillDots"></span>
+          </div>
+          <div class="badge">
+            <span class="badge-key">// CHAOS_</span>
+            <span class="dot-meter" id="chaosDots"></span>
+          </div>
+          <div class="badge">
+            <span class="badge-key">// NODE_</span>
+            <span id="nodeDisplay" style="color:var(--pink);font-size:11px"></span>
+          </div>
+          <div class="badge">
+            <span class="badge-key">// STATUS_</span>
+            <span style="color:var(--bright);font-size:11px">ACTIVE</span>
+          </div>
+        </div>
+      </div>
+      <!-- RIGHT -->
+      <div class="card-right">
+        <div class="card-right-header">
+          <div class="card-handle">// CASE_OPERATOR_PROFILE_</div>
+          <div class="card-name" id="profileName">--</div>
+          <div class="card-type-pill" id="profileType">--</div>
+        </div>
+        <div class="card-stats">
+          <div class="stat-row">
+            <div class="stat-key"><span class="sl">//</span>AGE_</div>
+            <div class="stat-val" id="profileAge">--</div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-key"><span class="sl">//</span>CURRENT_MOOD_</div>
+            <div class="stat-val" id="profileMood">--</div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-key"><span class="sl">//</span>BELIEF_STRING_</div>
+            <div class="stat-val" id="profileBelief">--</div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-key"><span class="sl">//</span>CREATED_</div>
+            <div class="stat-val" id="profileDate">--</div>
+          </div>
+        </div>
+        <div class="card-big" id="profileBig">--</div>
+        <div class="card-waveform" id="waveform"></div>
+      </div>
     </div>
-
+    <div class="card-footer">
+      <span>NEON CASE OS &nbsp; // &nbsp; SECURE DATABASE ACTIVE</span>
+      <span id="profileFooterDate">--</span>
+    </div>
+  </div>
 </div>
 
+<script src="casefiles.js"></script>
 </body>
 </html>
